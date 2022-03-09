@@ -1,0 +1,23 @@
+{
+  "name": "jira-sprint-preparation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lighty/jira-sprint-preparation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lighty/jira-sprint-preparation/issues"
+  },
+  "homepage": "https://github.com/lighty/jira-sprint-preparation#readme",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.45"
+  }
+}
