@@ -14,7 +14,14 @@ interface SprintResponse {
 
 const execute = () => {
   const createdSprint = createSprint();
+  console.log(`create ${createdSprint.name}`)
   const futureSprints = fetchFutureSprints();
+  futureSprints.reverse().slice(1).forEach(futureSprint => {
+    const response = swap(createdSprint, futureSprint);
+    if (response.getResponseCode() === 204) {
+      console.log(`swap ${createdSprint.name} to ${futureSprint.name}`);
+    }
+  });
 }
 
 const nextSprintTerm = (): string => {
@@ -27,23 +34,33 @@ const nextSprintTerm = (): string => {
   return `${from} - ${to}`;
 }
 
+const swap = (from: Sprint, to: Sprint): GoogleAppsScript.URL_Fetch.HTTPResponse => {
+  const url = `https://${domain}/rest/agile/1.0/sprint/${from.id}/swap`;
+  const data = { sprintToSwapWith: to.id }
+  const response = post(url, data);
+  return response;
+};
+
 const createSprint = (): Sprint => {
   const url = `https://${domain}/rest/agile/1.0/sprint/`;
+  const data = { originBoardId, 'name': nextSprintTerm() }
+  const response = post(url, data);
+  const responseJson: Sprint = JSON.parse(response.getContentText());
+  return responseJson;
+};
+
+const post = (url: string, data: {}) => {
   const headers = {
     'Authorization' : "Basic " + Utilities.base64Encode(`${username}:${accessToken}`),
     'Content-Type' : 'application/json',
   }
-  const data = { originBoardId, 'name': nextSprintTerm() }
   const options = {
     headers,
     'method': 'post' as GoogleAppsScript.URL_Fetch.HttpMethod,
     'payload': JSON.stringify(data),
   }
-  const response = UrlFetchApp.fetch(url, options);
-  const responseJson: Sprint = JSON.parse(response.getContentText());
-  return responseJson;
-
-};
+  return UrlFetchApp.fetch(url, options);
+}
 
 const fetchFutureSprints = (): Sprint[] => {
   const url = `https://${domain}/rest/agile/1.0/board/${originBoardId}/sprint/?state=future`;
