@@ -29,8 +29,8 @@ const nextSprintTerm = (): string => {
   const nextWeek = new Date();
   nextWeek.setDate(now.getDate() + 7);
 
-  const from = `${now.getMonth()+1}/${now.getDate()+1}`
-  const to = `${nextWeek.getMonth()+1}/${nextWeek.getDate()}`
+  const from = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()+1}`
+  const to = `${nextWeek.getFullYear()}/${nextWeek.getMonth()+1}/${nextWeek.getDate()}`
   return `${from} - ${to}`;
 }
 
