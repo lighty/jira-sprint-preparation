@@ -44,7 +44,13 @@ const swap = (from: Sprint, to: Sprint): GoogleAppsScript.URL_Fetch.HTTPResponse
 
 const createSprint = (): Sprint => {
   const url = `https://${domain}/rest/agile/1.0/sprint/`;
-  const data = { originBoardId, 'name': nextSprintTerm() }
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() + 1);
+  startDate.setHours(14,0,0);
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() + 7);
+  endDate.setHours(13,0,0);
+  const data = { originBoardId, 'name': nextSprintTerm(), 'startDate': startDate, 'endDate': endDate };
   const response = post(url, data);
   const responseJson: Sprint = JSON.parse(response.getContentText());
   return responseJson;
